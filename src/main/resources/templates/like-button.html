@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>웹게임</title>
+<!--    <script crossorigin src="https://unpkg.com/react@18/umd/react.production.js"></script>-->
+<!--    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>-->
+</head>
+<body>
+
+<div id="root"></div>
+<script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+<script type="text/babel">
+    const GuGuDan = () => {
+        const [state, setState] = React.useState({
+            first:Math.ceil(Math.random() * 9),
+            second:Math.ceil(Math.random() * 9),
+            value: '',
+            result: '',
+        });
+
+        const inputRef = React.useRef(null); // Create a ref using useRef
+
+        const onSubmit = (e) => {
+            e.preventDefault();
+            if (parseInt(state.value) === state.first * state.second) {
+                setState({
+                    result : `정답 ${state.value}`,
+                    first:Math.ceil(Math.random() * 9),
+                    second:Math.ceil(Math.random() * 9),
+                    value: '',
+                });
+            } else {
+                setState({
+                    ...state,
+                    result : '틀렸음',
+                    value: '',
+                });
+            }
+            inputRef.current.focus();
+        }
+
+        const onChange = (e) => {
+            setState({...state,value: e.target.value});
+        }
+
+        return (
+            <div>
+                <div>{state.first}곱하기{state.second}는?</div>
+                    <input ref={inputRef} type="number" value={state.value} onChange={onChange}/>
+                    <button onClick={onSubmit}>입력!</button>
+                <div>{state.result}</div>
+            </div>
+        );
+    }
+
+</script>
+<script type="text/babel">
+    // ReactDOM.render(React.createElement(LikeButton), document.getElementById('root'));
+    ReactDOM.createRoot(document.getElementById('root')).render(
+        <React.Fragment>
+            <GuGuDan />
+            <GuGuDan />
+            <GuGuDan />
+        </React.Fragment>
+    );
+</script>
+</body>
+</html>
